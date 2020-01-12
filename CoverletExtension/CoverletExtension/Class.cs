@@ -6,7 +6,7 @@ namespace CoverletExtension
     public class Class
     {
         public string ClassName { get; }
-        public Dictionary<string, Method> Methods { get; } = new Dictionary<string, Method>();
+        public List<Method> Methods { get; } = new List<Method>();
 
         public Class(string className)
         {
@@ -27,7 +27,7 @@ namespace CoverletExtension
                 }
             }
 
-            Methods.Add(methodName, method);
+            Methods.Add(method);
         }
     }
 }

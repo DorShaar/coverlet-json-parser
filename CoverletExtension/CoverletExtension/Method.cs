@@ -6,8 +6,7 @@ namespace CoverletExtension
     public class Method
     {
         public string MethodName { get; }
-
-        public SortedDictionary<int, int> Lines = new SortedDictionary<int, int>();
+        public List<LineInfo> Lines = new List<LineInfo>();
 
         public Method(string methodName)
         {
@@ -18,7 +17,9 @@ namespace CoverletExtension
         {
             foreach (JValue lineValue in methodLinesToken.Children())
             {
-                Lines.Add(int.Parse(methodLinesToken.Name), int.Parse(lineValue.Value.ToString()));
+                Lines.Add(new LineInfo(
+                    int.Parse(methodLinesToken.Name), 
+                    int.Parse(lineValue.Value.ToString())));
             }
         }
     }

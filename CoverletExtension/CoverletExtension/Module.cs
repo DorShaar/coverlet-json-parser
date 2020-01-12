@@ -7,7 +7,7 @@ namespace CoverletExtension
     public class Module
     {
         public string ModuleName { get; }
-        public Dictionary<string, Document> Documents { get; } = new Dictionary<string, Document>();
+        public List<Document> Documents { get; } = new List<Document>();
 
         public Module(string moduleName)
         {
@@ -27,7 +27,7 @@ namespace CoverletExtension
                 }
             }
 
-            Documents.Add(documentName, document);
+            Documents.Add(document);
         }
     }
 }

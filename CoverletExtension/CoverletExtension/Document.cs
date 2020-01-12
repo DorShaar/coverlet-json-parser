@@ -7,7 +7,7 @@ namespace CoverletExtension
     public class Document
     {
         public string DocumentPath { get; }
-        public Dictionary<string, @Class> Classes { get; } = new Dictionary<string, Class>();
+        public List<Class> Classes { get; } = new List<Class>();
 
         public Document(string documentPath)
         {
@@ -17,7 +17,7 @@ namespace CoverletExtension
         public void AddClassFromJToken(JProperty classToken)
         {
             string className = Path.GetFileName(classToken.Name);
-            @Class @class = new @Class(className);
+            Class @class = new Class(className);
 
             foreach (JObject methodToken in classToken.Children())
             {
@@ -27,7 +27,7 @@ namespace CoverletExtension
                 }
             }
 
-            Classes.Add(className, @class);
+            Classes.Add(@class);
         }
     }
 }
