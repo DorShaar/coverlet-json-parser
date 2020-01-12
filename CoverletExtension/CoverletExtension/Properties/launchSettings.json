@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "CoverletExtension": {
+      "commandName": "Project",
+      "commandLineArgs": " \"C:\\Users\\Dor Shaar\\Desktop\\coverage.json\""
+    }
+  }
+}
