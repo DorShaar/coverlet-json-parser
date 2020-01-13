@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CoverletExtension
 {
@@ -7,27 +8,23 @@ namespace CoverletExtension
     {
         public string ClassName { get; }
         public List<Method> Methods { get; } = new List<Method>();
+        public bool IsCovered => Methods.All(method => method.IsCovered);
 
-        public Class(string className)
+        public Class(string className, JProperty classToken)
         {
             ClassName = className;
+            CreateClassFromJToken(classToken);
         }
 
-        public void AddMethodFromJToken(JProperty methodToken)
+        private void CreateClassFromJToken(JProperty classToken)
         {
-            string methodName = methodToken.Name;
-
-            Method method = new Method(methodName);
-            foreach (JObject methodTokens in methodToken.Children())
+            foreach (JObject methodToken in classToken.Children())
             {
-                JObject methodLinesObject = methodTokens["Lines"] as JObject;
-                foreach (JProperty methodLinesProperty in methodLinesObject.Children())
+                foreach (JProperty methodProperty in methodToken.Children())
                 {
-                    method.AddMethodLinesFromJToken(methodLinesProperty);
+                    Methods.Add(new Method(methodProperty.Name, methodProperty));
                 }
             }
-
-            Methods.Add(method);
         }
     }
 }

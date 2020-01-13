@@ -1,26 +1,17 @@
 ﻿using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CoverletExtension
 {
     public class CoverageResult
     {
-        public Dictionary<string, Module> Modules = new Dictionary<string, Module>();
+        public List<Module> Modules = new List<Module>();
+        public bool IsCovered => Modules.All(module => module.IsCovered);
 
-        public void AddModuleFromJToken(JProperty moduleProperty)
+        public CoverageResult(JProperty moduleProperty)
         {
-            string moduleName = moduleProperty.Name;
-
-            Module module = new Module(moduleName);
-            foreach (JObject documentObject in moduleProperty.Children())
-            {
-                foreach (JProperty documentProperty in documentObject.Children())
-                {
-                    module.AddDocumentFromJToken(documentProperty);
-                }
-            }
-
-            Modules.Add(moduleName, module);
+            Modules.Add(new Module(moduleProperty.Name, moduleProperty));
         }
     }
 }

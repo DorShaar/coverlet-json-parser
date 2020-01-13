@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace CoverletExtension
 {
@@ -8,26 +9,24 @@ namespace CoverletExtension
     {
         public string ModuleName { get; }
         public List<Document> Documents { get; } = new List<Document>();
+        public bool IsCovered => Documents.All(document => document.IsCovered);
 
-        public Module(string moduleName)
+        public Module(string moduleName, JProperty documentToken)
         {
             ModuleName = moduleName;
+            CreateDocumentFromJToken(documentToken);
         }
 
-        public void AddDocumentFromJToken(JProperty documentToken)
+        private void CreateDocumentFromJToken(JProperty moduleToken)
         {
-            string documentName = Path.GetFileName(documentToken.Name);
-
-            Document document = new Document(documentName);
-            foreach (JObject classObject in documentToken.Children())
+            foreach (JObject documentObject in moduleToken.Children())
             {
-                foreach (JProperty classProperty in classObject.Children())
+                foreach (JProperty documentProperty in documentObject.Children())
                 {
-                    document.AddClassFromJToken(classProperty);
+                    string documentName = Path.GetFileName(documentProperty.Name);
+                    Documents.Add(new Document(documentName, documentProperty));
                 }
             }
-
-            Documents.Add(document);
         }
     }
 }

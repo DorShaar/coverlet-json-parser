@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace CoverletExtension
 {
@@ -10,10 +11,10 @@ namespace CoverletExtension
             Console.WriteLine();
             CoverletJsonParser coverletJsonParser = new CoverletJsonParser();
 
-            CoverageResult coverageResult = coverletJsonParser.Parse(args[0]);
+            List<CoverageResult> coverageResults = coverletJsonParser.Parse(args[0]);
 
             CoverageMissPrinter coverageMissPrinter = new CoverageMissPrinter();
-            coverageMissPrinter.Print(coverageResult);
+            coverageMissPrinter.Print(coverageResults[0]);
         }
     }
 }

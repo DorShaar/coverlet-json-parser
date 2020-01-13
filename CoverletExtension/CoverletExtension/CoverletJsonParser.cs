@@ -1,32 +1,32 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace CoverletExtension
 {
     public class CoverletJsonParser
     {
-        public CoverageResult Parse(string jsonFilePath)
+        public List<CoverageResult> Parse(string jsonFilePath)
         {
             if (!File.Exists(jsonFilePath))
             {
                 Console.WriteLine($"No such file {jsonFilePath}");
-                return new CoverageResult();
+                return null;
             }
 
             string jsonString = File.ReadAllText(jsonFilePath);
 
             JObject jsonObject = JObject.Parse(jsonString);
 
-            CoverageResult coverageResult = new CoverageResult();
+            List<CoverageResult> coverageResults = new List<CoverageResult>();
 
             foreach (JProperty moduleProperty in jsonObject.Children())
             {
-                coverageResult.AddModuleFromJToken(moduleProperty);
+                coverageResults.Add(new CoverageResult(moduleProperty));
             }
 
-            return coverageResult;
+            return coverageResults;
         }
     }
 }
