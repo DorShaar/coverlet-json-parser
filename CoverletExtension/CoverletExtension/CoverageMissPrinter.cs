@@ -5,9 +5,15 @@ namespace CoverletExtension
 {
     public class CoverageMissPrinter
     {
-        public void Print(CoverageResult coverageResult)
+        public void Print(IEnumerable<CoverageResult> coverageResults)
         {
-            PrintAllUncoveredModules(coverageResult.Modules);
+            foreach(CoverageResult coverageResult in coverageResults)
+            {
+                if (coverageResult.IsCovered)
+                    continue;
+
+                PrintAllUncoveredModules(coverageResult.Modules);
+            }
         }
 
         private void PrintAllUncoveredModules(IEnumerable<Module> modules)
